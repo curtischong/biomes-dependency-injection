@@ -1,11 +1,9 @@
 import { isDisposable } from "./disposable";
-import { log } from "@/shared/logging";
-import { timeCode } from "@/shared/metrics/performance_timing";
 import type { AcceptableAsPathKey } from "./path_map";
-import { mapSet } from "@/shared/util/collections";
-import { Cval, makeCvalHook } from "@/shared/util/cvals";
-import { clearObjectProperties, downloadTextFile } from "@/shared/util/helpers";
-import { assertNever } from "@/shared/util/type_helpers";
+import { mapSet } from "./collections";
+import { Cval, makeCvalHook } from "./cvals";
+import { clearObjectProperties} from "./helpers";
+import { assertNever } from "./type_helpers";
 import { ok } from "assert";
 import { sortBy } from "lodash";
 import { types } from "util";
@@ -57,7 +55,7 @@ class Value<T> {
       }
     };
     const onCatch = (error: any) => {
-      log.error(`Resource "${debugName}" had error`, { error });
+      console.error(`Resource "${debugName}" had error`, { error });
       this.deps = onReady(this);
       if (this.count == 0) {
         this.dispose();
@@ -253,21 +251,22 @@ export class KeepPurger {
     // TODO: Topologically sort the purge set here for correct deletion order.
     // TODO: Figure out a way to amortize these deletions over multiple cleanup
     // calls so that we don't cause frame spikes during a large purge event.
-    timeCode("resources:purge", () => {
-      const purge: Arg[][] = [];
-      for (const [key, node] of nodes) {
-        if (this.keep.has(node)) {
-          continue;
-        }
-        node.free();
-        purge.push(key);
-      }
-      for (const key of purge) {
-        nodes.delete(key);
-      }
-      // Clear all keep sets.
-      this.keep.clear();
-    });
+    // curtis: removed the timeCode function
+    // timeCode("resources:purge", () => {
+    const purge: Arg[][] = [];
+    for (const [key, node] of nodes) {
+    if (this.keep.has(node)) {
+        continue;
+    }
+    node.free();
+    purge.push(key);
+    }
+    for (const key of purge) {
+    nodes.delete(key);
+    }
+    // Clear all keep sets.
+    this.keep.clear();
+    // });
   }
 }
 
@@ -503,9 +502,10 @@ export class Resources {
           throw new Error("Unreachable");
       }
     })();
-    if (download && !process.env.IS_SERVER) {
-      downloadTextFile(`audit.${extension}`, output);
-    }
+    // commented cause I don't think I care about downloading a text file
+    // if (download && !process.env.IS_SERVER) {
+    //   downloadTextFile(`audit.${extension}`, output);
+    // }
     return output;
   }
 

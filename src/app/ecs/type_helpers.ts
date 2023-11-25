@@ -1,15 +1,15 @@
-import { memoize } from "lodash";
-import { z } from "zod";
+// import { memoize } from "lodash";
+// import { z } from "zod";
 
 export type JSONable = string | number | boolean | null | JSONable[] | { [key: string]: JSONable };
 
 export type JSONObject = { [key: string]: JSONable };
 
-export const zJSONLiteral = z.union([z.string(), z.number(), z.boolean(), z.null()]);
-export const zJSONable: z.ZodType<JSONable> = z.lazy(
-  memoize(() => z.union([zJSONLiteral, z.array(zJSONable), z.record(zJSONable)]))
-);
-export const zJSONObject = z.record(zJSONable);
+// export const zJSONLiteral = z.union([z.string(), z.number(), z.boolean(), z.null()]);
+// export const zJSONable: z.ZodType<JSONable> = z.lazy(
+//   memoize(() => z.union([zJSONLiteral, z.array(zJSONable), z.record(zJSONable)]))
+// );
+// export const zJSONObject = z.record(zJSONable);
 
 export type RecursiveJSONable<T, D extends number = 10> = [D] extends [never]
   ? never

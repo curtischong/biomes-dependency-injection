@@ -13,7 +13,7 @@ import type {
 } from "./types";
 import { TypedResourcesBuilder } from "./types";
 import { ifPromiseThen } from "./async";
-import { makeCvalHook } from "@/shared/util/cvals";
+import { makeCvalHook } from "./cvals";
 import { ok } from "assert";
 import { isEqual } from "lodash";
 

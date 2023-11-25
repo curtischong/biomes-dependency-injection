@@ -3,7 +3,7 @@ import type {
     AuditArgs,
     NodeCollector,
     ResourceDeps,
-  } from "@/shared/resources/core";
+  } from "./core";
   import { ResourcesBuilder } from "./core";
   import type { PathMap } from "./path_map";
   
