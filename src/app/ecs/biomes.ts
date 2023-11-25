@@ -1,4 +1,4 @@
-import { isDisposable } from "@/shared/disposable";
+import { isDisposable } from "./disposable";
 import type { Node, NodeCollector, NodeMap } from "./core";
 import { KeepPurger } from "./core";
 import type { PathMap } from "./path_map";
@@ -10,9 +10,9 @@ import type {
   Ret,
   TypedResourceDeps,
   TypedResources,
-} from ".types";
+} from "./types";
 import { TypedResourcesBuilder } from "./types";
-import { ifPromiseThen } from "@/shared/util/async";
+import { ifPromiseThen } from "./async";
 import { makeCvalHook } from "@/shared/util/cvals";
 import { ok } from "assert";
 import { isEqual } from "lodash";

@@ -1,7 +1,7 @@
-import { isDisposable } from "@/shared/disposable";
+import { isDisposable } from "./disposable";
 import { log } from "@/shared/logging";
 import { timeCode } from "@/shared/metrics/performance_timing";
-import type { AcceptableAsPathKey } from "@/shared/resources/path_map";
+import type { AcceptableAsPathKey } from "./path_map";
 import { mapSet } from "@/shared/util/collections";
 import { Cval, makeCvalHook } from "@/shared/util/cvals";
 import { clearObjectProperties, downloadTextFile } from "@/shared/util/helpers";
