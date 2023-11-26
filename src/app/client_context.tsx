@@ -1,11 +1,12 @@
 import React from "react";
 import { ClientResourcePaths, ClientResources } from "./ecs/ecs_types";
-import { resourcesBuilder } from "./ecs/ecs_init";
+import { Loop, resourcesBuilder } from "./ecs/ecs_init";
 import { ReactResources } from "./ecs/ecs_core/react";
 
 export interface ClientContext {
     resources: ClientResources;
     reactResources: ReactResources<ClientResourcePaths>;
+    loop: Loop;
 }
 
 export interface ClientContextReact {
@@ -27,10 +28,13 @@ export const ClientContextProvider = ({
     React.useEffect(() => {
         (async () => {
             const resources = await resourcesBuilder();
+            const reactResources = new ReactResources<ClientResourcePaths>(resources);
+            const loop = new Loop(reactResources);
             setValue({
                 clientContext: {
                     resources,
-                    reactResources: new ReactResources<ClientResourcePaths>(resources),
+                    reactResources,
+                    loop,
                 },
             });
         })();

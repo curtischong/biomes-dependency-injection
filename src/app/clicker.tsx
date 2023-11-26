@@ -1,7 +1,7 @@
 import { useClientContext } from "./client_context";
 
 export const Clicker = () => {
-    const { resources, reactResources } = useClientContext();
+    const { reactResources } = useClientContext();
     // TODO: use "use"
     const { value: numPressed } = reactResources.use("/clicker/num_pressed");
 
@@ -11,17 +11,12 @@ export const Clicker = () => {
             <p>{numPressed}</p>
             <button
                 onClick={() => {
-                    const { value: numPressed2 } = resources.get("/clicker/num_pressed");
-                    if (numPressed2 === undefined) {
+                    if (numPressed === undefined) {
                         return;
                     }
-                    console.log("numPressed2", numPressed2);
                     console.log("click");
-                    // reactResources.set("/clicker/num_pressed", {
-                    //     value: numPressed + 1,
-                    // });
-                    resources.set("/clicker/num_pressed", {
-                        value: numPressed2 + 1,
+                    reactResources.set("/clicker/num_pressed", {
+                        value: numPressed + 1,
                     });
                 }}
             >

@@ -208,8 +208,10 @@ export class ReactResources<P extends PathMap<P>> {
                 return;
             }
 
+            console.log("useEffect", path, ...args);
             const cb = () => {
                 const newVersion = this.resources.version(path, ...args);
+                // console.log("newVersion", newVersion, version);
                 if (version < newVersion) {
                     setVersion(newVersion);
                 }
