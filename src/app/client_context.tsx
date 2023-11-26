@@ -1,9 +1,11 @@
 import React from "react";
-import { ClientResources } from "./ecs/ecs_types";
+import { ClientResourcePaths, ClientResources } from "./ecs/ecs_types";
 import { resourcesBuilder } from "./ecs/ecs_init";
+import { ReactResources } from "./ecs/ecs_core/react";
 
 export interface ClientContext {
     resources: ClientResources;
+    reactResources: ReactResources<ClientResourcePaths>;
 }
 
 export interface ClientContextReact {
@@ -24,13 +26,16 @@ export const ClientContextProvider = ({
     const [value, setValue] = React.useState<ClientContextReact | undefined>();
     React.useEffect(() => {
         (async () => {
+            const resources = await resourcesBuilder();
             setValue({
                 clientContext: {
-                    resources: await resourcesBuilder(),
+                    resources,
+                    reactResources: new ReactResources<ClientResourcePaths>(resources),
                 },
             });
         })();
     }, []);
+
     if (value) {
         return (
             <ClientContextReactContext.Provider value={value}>
