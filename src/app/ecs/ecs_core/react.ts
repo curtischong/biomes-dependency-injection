@@ -27,9 +27,12 @@ const reactEmitterListeners = new Cval({
 
 export class ReactResources<P extends PathMap<P>> {
     private resources: TypedResources<P>;
-    emitter: EventEmitter = new EventEmitter();
+    // emitter: EventEmitter = new EventEmitter();
 
-    constructor(resources: TypedResources<P>) {
+    constructor(
+        resources: TypedResources<P>,
+        public emitter: EventEmitter
+    ) {
         this.resources = resources;
         this.emitter.setMaxListeners(1000);
     }

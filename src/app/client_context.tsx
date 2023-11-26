@@ -2,11 +2,12 @@ import React from "react";
 import { ClientResourcePaths, ClientResources } from "./ecs/ecs_types";
 import { Loop, resourcesBuilder } from "./ecs/ecs_init";
 import { ReactResources } from "./ecs/ecs_core/react";
+import EventEmitter from "events";
 
 export interface ClientContext {
     resources: ClientResources;
     reactResources: ReactResources<ClientResourcePaths>;
-    loop: Loop;
+    // loop: Loop;
 }
 
 export interface ClientContextReact {
@@ -27,14 +28,27 @@ export const ClientContextProvider = ({
     const [value, setValue] = React.useState<ClientContextReact | undefined>();
     React.useEffect(() => {
         (async () => {
-            const resources = await resourcesBuilder();
-            const reactResources = new ReactResources<ClientResourcePaths>(resources);
-            const loop = new Loop(reactResources);
+            const emitter = new EventEmitter(); // needed so the resourcesBuilder can emit "set" events to the react resources
+            // the original biomes code doesn't use this because instead, they use a loop that constantly calls the eventEmitter to
+            // tell the react components to update:
+            //
+            // const emitter = this.reactResources.emitter;
+            // if (emitter) {
+            //     emitter.eventNames().forEach((path) => {
+            //         // console.log("path", path);
+            //         if (path !== "hot") {
+            //             emitter.emit(path);
+            //         }
+            //     });
+            // }
+            const resources = await resourcesBuilder(emitter);
+            const reactResources = new ReactResources<ClientResourcePaths>(resources, emitter);
+            // const loop = new Loop(reactResources);
             setValue({
                 clientContext: {
                     resources,
                     reactResources,
-                    loop,
+                    // loop,
                 },
             });
         })();

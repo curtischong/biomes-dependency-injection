@@ -7,6 +7,7 @@ import { assertNever } from "./type_helpers";
 import { ok } from "assert";
 import { sortBy } from "lodash";
 import { types } from "util";
+import EventEmitter from "events";
 
 const RESOURCE_PATH = /^(\/[A-Za-z0-9+/=_-]+)+$/;
 
@@ -403,7 +404,8 @@ export class Resources {
     constructor(
         private readonly fns: Map<string, GenFn<unknown>>,
         private readonly collector: NodeCollector,
-        private readonly baseVersion = 0
+        private readonly baseVersion = 0,
+        private readonly emitter: EventEmitter
     ) {
         makeCvalHook({
             path: ["resources", "nodes"],
@@ -559,6 +561,7 @@ export class Resources {
                 return node.stale();
             });
         }
+        this.emitter.emit(path); // updates react components after we've updated the resource
     }
 
     update<T>(path: string, ...args: [...Arg[], (val: T) => void]): void {
@@ -603,11 +606,12 @@ export class ResourcesBuilder {
         return this;
     }
 
-    build() {
+    build(emitter: EventEmitter) {
         return new Resources(
             this.fns,
             this.collector ?? new DefaultNodeCollector(Infinity),
-            this.baseVersion
+            this.baseVersion,
+            emitter
         );
     }
 }
