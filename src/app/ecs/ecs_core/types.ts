@@ -12,6 +12,8 @@ export type Resolve<T> = T extends PromiseLike<infer U> ? U : T;
 export interface TypedResourceDeps<P extends PathMap<P>> {
     get<K extends Key<P>>(path: K, ...args: [...Args<P, K>]): Ret<P, K>;
 }
+
+// the implementation for all these functions is in ecs_core/core.ts
 export interface TypedResources<P extends PathMap<P>> {
     count(): number;
     clear(): void;
@@ -19,14 +21,14 @@ export interface TypedResources<P extends PathMap<P>> {
     audit(args?: AuditArgs): unknown;
     version<K extends Key<P>>(path: K, ...args: [...Args<P, K>]): number;
     cachedVersion<K extends Key<P>>(path: K, ...args: [...Args<P, K>]): number;
-    stale<K extends Key<P>>(path: K, ...args: [...Args<P, K>]): boolean;
+    stale<K extends Key<P>>(path: K, ...args: [...Args<P, K>]): boolean; // a better name is: "isStale"
     get<K extends Key<P>>(path: K, ...args: [...Args<P, K>]): Ret<P, K>;
-    cached<K extends Key<P>>(path: K, ...args: [...Args<P, K>]): Resolve<Ret<P, K>> | undefined;
+    cached<K extends Key<P>>(path: K, ...args: [...Args<P, K>]): Resolve<Ret<P, K>> | undefined; // use cached when the value you are being stored is a promise (this is because it takes time for the promise to resolve, so instead, we're using cached values of the object)
     peek<K extends Key<P>>(path: K, ...args: [...Args<P, K>]): Resolve<Ret<P, K>> | undefined;
     with<K extends Key<P>, R>(
         path: string,
         args: [...Args<P, K>],
-        fn: (val: Resolve<Ret<P, K>>) => R
+        fn: (val: Resolve<Ret<P, K>>) => R // use with when you want to call a function stored in ecs!
     ): Promise<R>;
     invalidate<K extends Key<P>>(path: K, ...args: [...Args<P, K>]): void;
     set<K extends Key<P>>(path: K, ...args: [...Args<P, K>, Exclude<Ret<P, K>, any[]>]): void;
