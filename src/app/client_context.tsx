@@ -1,7 +1,7 @@
 import React from "react";
-import { ClientResourcePaths, ClientResources } from "./ecs/ecs_types";
-import { resourcesBuilder } from "./ecs/ecs_init";
-import { ReactResources } from "./ecs/ecs_core/react";
+import { ClientResourcePaths, ClientResources } from "./dep_inj/dep_types";
+import { resourcesBuilder } from "./dep_inj/dep_init";
+import { ReactResources } from "./dep_inj/dep_inj_core/react";
 import EventEmitter from "events";
 
 export interface ClientContext {

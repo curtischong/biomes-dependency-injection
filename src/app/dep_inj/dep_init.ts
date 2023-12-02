@@ -1,6 +1,6 @@
 import EventEmitter from "events";
-import { BiomesResourceCapacities, BiomesResourcesBuilder } from "./ecs_core/biomes";
-import { ClientReactResources, ClientResourcePaths } from "./ecs_types";
+import { BiomesResourceCapacities, BiomesResourcesBuilder } from "./dep_inj_core/biomes";
+import { ClientResourcePaths } from "./dep_types";
 import { addClickerResources } from "./resources/clicker";
 
 export async function resourcesBuilder(emitter: EventEmitter) {

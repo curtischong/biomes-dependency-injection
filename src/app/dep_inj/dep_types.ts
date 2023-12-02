@@ -1,8 +1,8 @@
-import { BiomesResourcesBuilder } from "./ecs_core/biomes";
-import { PathDef } from "./ecs_core/path_map";
-import { ReactResources } from "./ecs_core/react";
-import { Optional } from "./ecs_core/type_helpers";
-import { TypedResources } from "./ecs_core/types";
+import { BiomesResourcesBuilder } from "./dep_inj_core/biomes";
+import { PathDef } from "./dep_inj_core/path_map";
+import { ReactResources } from "./dep_inj_core/react";
+import { Optional } from "./dep_inj_core/type_helpers";
+import { TypedResources } from "./dep_inj_core/types";
 
 interface BaseClientResourcePaths {
     "/clicker/num_pressed": PathDef<[], { value: Optional<number> }>;

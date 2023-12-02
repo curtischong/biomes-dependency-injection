@@ -13,7 +13,7 @@ export interface TypedResourceDeps<P extends PathMap<P>> {
     get<K extends Key<P>>(path: K, ...args: [...Args<P, K>]): Ret<P, K>;
 }
 
-// the implementation for all these functions is in ecs_core/core.ts
+// the implementation for all these functions is in dep_inj_core/core.ts
 export interface TypedResources<P extends PathMap<P>> {
     count(): number;
     clear(): void;
@@ -28,7 +28,7 @@ export interface TypedResources<P extends PathMap<P>> {
     with<K extends Key<P>, R>(
         path: string,
         args: [...Args<P, K>],
-        fn: (val: Resolve<Ret<P, K>>) => R // use with when you want to call a function stored in ecs!
+        fn: (val: Resolve<Ret<P, K>>) => R // use with when you want to call a function stored in the dependencies!
     ): Promise<R>;
     invalidate<K extends Key<P>>(path: K, ...args: [...Args<P, K>]): void;
     set<K extends Key<P>>(path: K, ...args: [...Args<P, K>, Exclude<Ret<P, K>, any[]>]): void;
